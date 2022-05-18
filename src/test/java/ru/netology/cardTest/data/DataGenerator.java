@@ -3,9 +3,11 @@ package ru.netology.cardTest.data;
 
 import com.github.javafaker.Faker;
 import lombok.Data;
+import lombok.Getter;
 import lombok.Value;
 import lombok.experimental.UtilityClass;
 import lombok.val;
+import ru.netology.cardTest.test.UserInfo;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,43 +16,52 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-    public class DataGenerator {
-        private DataGenerator() {
-        }
-        private static final Faker faker = new Faker(new Locale("ru"));
+@Data
+@Getter
+public class DataGenerator {
+    private static String name2;
 
-        public static String generateDate(int days) {
-            String date = LocalDate.now().plusDays(days).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-            return date;
-        }
+    public static String getName2() {
+        return name2;
+    }
 
-        public static String generateCity(String locale) {
-            String city = faker.address().city();
-            return city;
-        }
+    private static final Faker faker = new Faker(new Locale("ru"));
 
-        public static String generateName(String locale) {
-            String name = faker.name().fullName();
-            return name;
-        }
+    public static class Registration {
+    }
 
-        public static String generatePhone(String locale) {
-            String phone = faker.phoneNumber().phoneNumber();
-            return phone;
-        }
-            public static UserInfo generateUser(String locale) {
-               Faker faker = new Faker(new Locale(locale));
-                return new UserInfo(faker.name().fullName(),
-                        faker.phoneNumber().phoneNumber(),
-                        faker.address().city());
-            }
-        }
+    public DataGenerator() {
+    }
 
-        @Value
-        public class UserInfo {
-            String city;
-            String name;
-            String phone;
-        }
+    public String generateDate(int days) {
+        return LocalDate.now().plusDays(days).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
 
+    public static String getRandomCity() {
+        String city = faker.address().city();
+        // TODO: добавить логику для объявления переменной login и задания её значения, для генерации
+        //  случайного логина используйте faker
+        return city;
+    }
 
+    public static String getRandomName() {
+        String name = faker.name().name();
+        // TODO: добавить логику для объявления переменной password и задания её значения, для генерации
+        //  случайного пароля используйте faker
+        return name;
+    }
+
+    public static String getRandomPhone() {
+        String phone = faker.phoneNumber().phoneNumber();
+        // TODO: добавить логику для объявления переменной password и задания её значения, для генерации
+        //  случайного пароля используйте faker
+        return phone;
+    }
+
+    public static UserInfo getUser() {
+        UserInfo user = new UserInfo(getRandomCity(), getRandomName(), getRandomPhone());
+        // TODO: создать пользователя user используя методы getRandomLogin(), getRandomPassword() и параметр status
+        return user;
+    }
+
+}
