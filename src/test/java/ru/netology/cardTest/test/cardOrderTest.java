@@ -21,6 +21,7 @@ import static com.codeborne.selenide.Selenide.*;
     @Data
     public class cardOrderTest {
         private int DAY_3 = 3;
+        private int DAY_5 = 5;
         UserInfo info = DataGenerator.getUser();
         DataGenerator data = new DataGenerator();
 
