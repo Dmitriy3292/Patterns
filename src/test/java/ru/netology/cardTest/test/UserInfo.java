@@ -2,7 +2,9 @@ package ru.netology.cardTest.test;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Value;
 
+@Value
 @Data
 @AllArgsConstructor
 public class UserInfo {

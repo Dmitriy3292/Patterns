@@ -18,50 +18,32 @@ import java.util.Random;
 
 @Data
 @Getter
+@UtilityClass
 public class DataGenerator {
-    private static String name2;
 
-    public static String getName2() {
-        return name2;
+    private static Faker faker = new Faker(new Locale("ru"));
+    ;
+
+    public static String generateDate(int shift) {
+        String date = LocalDate.now().plusDays(shift).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        return date;
     }
 
-    private static final Faker faker = new Faker(new Locale("ru"));
-
-    public static class Registration {
-    }
-
-    public DataGenerator() {
-    }
-
-    public String generateDate(int days) {
-        return LocalDate.now().plusDays(days).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-    }
-
-    public static String getRandomCity() {
-        String city = faker.address().city();
-        // TODO: добавить логику для объявления переменной login и задания её значения, для генерации
-        //  случайного логина используйте faker
+    public static String generateCity(String locale) {
+        String city = faker.address().cityName();
         return city;
     }
 
-    public static String getRandomName() {
-        String name = faker.name().name();
-        // TODO: добавить логику для объявления переменной password и задания её значения, для генерации
-        //  случайного пароля используйте faker
-        return name;
+    public static String generateName(String locale) {
+        String name = faker.name().firstName();
+        String surname = faker.name().lastName();
+        String fullName = name + " " + surname;
+        return fullName;
     }
 
-    public static String getRandomPhone() {
+    public static String generatePhone(String locale) {
         String phone = faker.phoneNumber().phoneNumber();
-        // TODO: добавить логику для объявления переменной password и задания её значения, для генерации
-        //  случайного пароля используйте faker
         return phone;
-    }
-
-    public static UserInfo getUser() {
-        UserInfo user = new UserInfo(getRandomCity(), getRandomName(), getRandomPhone());
-        // TODO: создать пользователя user используя методы getRandomLogin(), getRandomPassword() и параметр status
-        return user;
     }
 
 }

@@ -12,67 +12,48 @@ import ru.netology.cardTest.data.DataGenerator;
 import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
 
 
+@Data
+public class cardOrderTest {
 
 
-
-    @Data
-    public class cardOrderTest {
-        private int DAY_3 = 3;
-        private int DAY_5 = 5;
-        UserInfo info = DataGenerator.getUser();
-        DataGenerator data = new DataGenerator();
-
-        @BeforeEach
-        void setup() {
-            open("http://localhost:9999");
-        }
-        @Test
-        void shouldCardOrder() {
-            Configuration.holdBrowserOpen = true;
-            $("[data-test-id='city'] input").val(info.getCity());
-            $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-            $("[data-test-id='date'] input").val(data.generateDate(this.DAY_3));
-            $("[data-test-id='name'] input").val(info.getName());
-            $("[data-test-id='phone'] input").val(info.getPhone());
-            $("[data-test-id='agreement']").click();
-            $("div .button").click();
-            $("[data-test-id='success-notification'] .notification__title").should(visible, Duration.ofSeconds(15));
-            $("[data-test-id='success-notification'] .notification__content")
-                    .should(Condition.text("Встреча успешно запланирована на " + data.generateDate(this.DAY_3)), Duration.ofSeconds(15));
-
-        }
-
-        @Test
-        void shouldCardOrderNewData() {
-            $("[data-test-id='city'] input").val(info.getCity());
-            $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-            $("[data-test-id='date'] input").val(data.generateDate(this.DAY_3));
-            $("[data-test-id='name'] input").val(info.getName());
-            $("[data-test-id='phone'] input").val(info.getPhone());
-            $("[data-test-id='agreement']").click();
-            $("div .button").click();
-            $("[data-test-id='success-notification'] .notification__title").should(visible, Duration.ofSeconds(15));
-            $("[data-test-id='success-notification'] .notification__content")
-                    .should(Condition.text("Встреча успешно запланирована на " + data.generateDate(this.DAY_3)), Duration.ofSeconds(15));
-
-            $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-            $("[data-test-id='date'] input").val(data.generateDate(this.DAY_5));
-            $("div .button").click();
-            $("[data-test-id='replan-notification'] .notification__content")
-                    .should(Condition.text("У вас уже запланирована встреча на другую дату. Перепланировать?"));
-            $("[data-test-id='replan-notification'] .button").click();
-            $("[data-test-id='success-notification'] .notification__content")
-                    .should(Condition.text("Встреча успешно запланирована на " + data.generateDate(this.DAY_5)), Duration.ofSeconds(15));
-
-        }
-
-
+    @BeforeEach
+    void setUp() {
+        open("http://localhost:9999");
     }
 
+    @Test
+    void shouldCardOrderNewData() {
+        var daysToAddForFirstMeeting = 4;
+        var firstMeetingDate = DataGenerator.generateDate(daysToAddForFirstMeeting);
+        var daysToAddForSecondMeeting = 7;
+        var secondMeetingDate = DataGenerator.generateDate(daysToAddForSecondMeeting);
 
+        $("[data-test-id='city'] input").setValue(DataGenerator.generateCity("ru"));
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(DataGenerator.generateDate(4));
+        $x("//*[@name=\"name\"]").setValue(DataGenerator.generateName("ru"));
+        $x("//*[@name=\"phone\"]").setValue(DataGenerator.generatePhone("ru"));
+
+        $("[data-test-id=\"agreement\"]").click();
+        $(withText("Запланировать")).click();
+        $("[data-test-id=\"success-notification\"]")
+                .shouldHave(Condition.text("Встреча успешно запланирована на " + firstMeetingDate), Duration.ofSeconds(15));
+
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+        $("[data-test-id='date'] input").setValue(DataGenerator.generateDate(7));
+        $(withText("Запланировать")).click();
+
+        $("[data-test-id=\"replan-notification\"]")
+                .shouldHave(Condition.text("У вас уже запланирована встреча на другую дату."));
+        $(withText("Перепланировать")).click();
+        $("[data-test-id=\"success-notification\"]")
+                .shouldHave(Condition.text("Встреча успешно запланирована на " + secondMeetingDate), Duration.ofSeconds(15));
+    }
+}
 
 
 
