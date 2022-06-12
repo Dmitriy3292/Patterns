@@ -16,7 +16,7 @@ import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
 
 
-@Data
+
 public class cardOrderTest {
 
 

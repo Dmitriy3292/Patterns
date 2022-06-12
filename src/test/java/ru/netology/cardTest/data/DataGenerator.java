@@ -2,22 +2,13 @@ package ru.netology.cardTest.data;
 
 
 import com.github.javafaker.Faker;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Value;
 import lombok.experimental.UtilityClass;
-import lombok.val;
-import ru.netology.cardTest.test.UserInfo;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
-@Data
-@Getter
+
 @UtilityClass
 public class DataGenerator {
 

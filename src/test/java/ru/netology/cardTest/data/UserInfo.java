@@ -1,4 +1,4 @@
-package ru.netology.cardTest.test;
+package ru.netology.cardTest.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
